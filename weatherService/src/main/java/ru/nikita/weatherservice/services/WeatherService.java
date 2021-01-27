@@ -1,2 +1,9 @@
-package ru.nikita.weatherservice.services;public interface WeatherService {
+package ru.nikita.weatherservice.services;
+
+
+import ru.nikita.library.dto.WeatherDTO;
+
+public interface WeatherService {
+
+	WeatherDTO getWeatherByCity(String city);
 }
