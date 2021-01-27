@@ -1,0 +1,4 @@
+rootProject.name = 'multiProjectCamunda'
+
+include 'weatherService', 'camunda', 'library'
+
