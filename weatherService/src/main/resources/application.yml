@@ -2,3 +2,6 @@ app:
   api:
     weatherApiUrl: 'http://api.openweathermap.org/data/2.5/weather'
     apiKey: ${weatherApiKey}
+
+server:
+  port: {WEATHER_SERVER_PORT: 8081}

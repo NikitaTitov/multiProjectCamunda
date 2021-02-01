@@ -9,7 +9,7 @@ import ru.nikita.weatherservice.services.WeatherService;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/weather")
 public class WeatherController {
 
 	private final WeatherService weatherService;

@@ -3,7 +3,7 @@ package ru.nikita.weatherservice.clients;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.client.RestTemplate;
@@ -19,13 +19,17 @@ public class WeatherApiClient implements WeatherRepository {
 	private final RestTemplate restTemplate;
 	private final String url;
 
-//	public WeatherApiClient(RestTemplate restTemplate) {
+//	@Autowired
+//	public WeatherApiClient(
+//			ApiSettings apiSettings,
+//			RestTemplate restTemplate
+//	) {
 //		this.restTemplate = restTemplate;
+//		this.url = apiSettings.getWeatherApiUrl() + "?appid=" + apiSettings.getApiKey() + "&units=metric&lang=ru";
 //	}
 
 	public WeatherApiClient(
-			ApiSettings apiSettings,
-			RestTemplateBuilder restTemplateBuilder
+			ApiSettings apiSettings
 	) {
 		this.restTemplate = new RestTemplate();
 		this.url = apiSettings.getWeatherApiUrl() + "?appid=" + apiSettings.getApiKey() + "&units=metric&lang=ru";
@@ -47,11 +51,6 @@ public class WeatherApiClient implements WeatherRepository {
 			result.setCityName(jsonNode.get("name").asText());
 		});
 		return result;
-	}
-
-	@Override
-	public WeatherDTO getWeatherByCityName(String appid, String cityName) {
-		return null;
 	}
 
 }
