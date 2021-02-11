@@ -11,7 +11,9 @@ import javax.validation.constraints.NotBlank;
 @ConfigurationProperties("app.api")
 public class ApiSettings {
 
-	private String weatherApiUrl;
-	@NotBlank
-	private String apiKey;
+    @NotBlank
+    private String weatherApiUrl;
+
+    @NotBlank
+    private String apiKey;
 }

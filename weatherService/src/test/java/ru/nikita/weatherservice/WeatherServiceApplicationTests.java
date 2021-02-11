@@ -10,4 +10,5 @@ class WeatherServiceApplicationTests {
 	void contextLoads() {
 	}
 
+	// TODO ни одного?
 }

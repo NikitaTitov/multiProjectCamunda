@@ -16,30 +16,35 @@ import java.util.Optional;
 @Repository
 @RequiredArgsConstructor
 public class WeatherApiClient implements WeatherRepository {
-	@Qualifier("weather")
-	private final RestTemplate restTemplate;
 
-	@Override
-	public WeatherDTO getWeatherByCityName(String cityName) {
+    @Qualifier("weather")
+    private final RestTemplate restTemplate;
+    private static final ObjectMapper MAPPER = new ObjectMapper();
 
-		return Optional.of(restTemplate.getForEntity("", String.class, cityName))
-				.map(stringResponseEntity -> {
-					try {
-						return new ObjectMapper().readTree(stringResponseEntity.getBody());
-					} catch (JsonProcessingException e) {
-						log.error(e.getMessage());
-					}
-					return null;
-				})
-				.map(jsonNode -> {
-					WeatherDTO result = new WeatherDTO();
+    @Override
+    public WeatherDTO getWeatherByCityName(String cityName) {
 
-					result.setTemperature(jsonNode.get("main").get("temp").asText());
-					result.setCityName(jsonNode.get("name").asText());
-					return result;
-				})
-				.orElseThrow(RuntimeException::new);
+        // TODO обязательно ли передаватьт пустую строку? можно ли просто параметры (т.к. дефолтный url задан уже)
+        return Optional.of(restTemplate.getForEntity("", String.class, cityName))
+                .map(stringResponseEntity -> {
+                    // TODO mapstruct
+                    try {
+                        return MAPPER.readTree(stringResponseEntity.getBody());
+                    } catch (JsonProcessingException e) {
+                        log.error(e.getMessage());
+                    }
+                    return null;
+                })
+                .map(jsonNode -> {
+                    // TODO mapstruct
+                    WeatherDTO result = new WeatherDTO();
 
-	}
+                    result.setTemperature(jsonNode.get("main").get("temp").asText());
+                    result.setCityName(jsonNode.get("name").asText());
+                    return result;
+                })
+                .orElseThrow(RuntimeException::new);
+
+    }
 
 }

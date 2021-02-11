@@ -1,0 +1,14 @@
+{
+  "properties": [
+    {
+      "name": "app.api.weatherApiUrl",
+      "type": "java.lang.String",
+      "description": "Weather source service url."
+    },
+    {
+      "name": "app.api.apiKey",
+      "type": "java.lang.String",
+      "description": "Weather source API secret key."
+    }
+  ]
+}
