@@ -5,9 +5,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.client.RestTemplate;
 import ru.nikita.library.dto.WeatherDTO;
+import ru.nikita.library.mappers.JsonNodeWeatherMapper;
+import ru.nikita.library.wrapper.JsonNodeWrapper;
 import ru.nikita.weatherservice.repositories.WeatherRepository;
 
 import java.util.Optional;
@@ -24,10 +27,9 @@ public class WeatherApiClient implements WeatherRepository {
     @Override
     public WeatherDTO getWeatherByCityName(String cityName) {
 
-        // TODO обязательно ли передаватьт пустую строку? можно ли просто параметры (т.к. дефолтный url задан уже)
-        return Optional.of(restTemplate.getForEntity("", String.class, cityName))
+        ResponseEntity<String> forEntity = restTemplate.getForEntity("", String.class, cityName);
+        return Optional.of(forEntity)
                 .map(stringResponseEntity -> {
-                    // TODO mapstruct
                     try {
                         return MAPPER.readTree(stringResponseEntity.getBody());
                     } catch (JsonProcessingException e) {
@@ -35,14 +37,7 @@ public class WeatherApiClient implements WeatherRepository {
                     }
                     return null;
                 })
-                .map(jsonNode -> {
-                    // TODO mapstruct
-                    WeatherDTO result = new WeatherDTO();
-
-                    result.setTemperature(jsonNode.get("main").get("temp").asText());
-                    result.setCityName(jsonNode.get("name").asText());
-                    return result;
-                })
+                .map(jsonNode -> JsonNodeWeatherMapper.MAPPER.toWeatherDto(new JsonNodeWrapper(jsonNode)))
                 .orElseThrow(RuntimeException::new);
 
     }
