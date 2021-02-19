@@ -11,4 +11,5 @@ public class WeatherDTO {
 
 	private String cityName;
 	private String temperature;
+	private String description;
 }
